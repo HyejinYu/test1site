@@ -45,8 +45,8 @@ function answer_check(){
     var total = 0;
     var correct = 0;
     $('.test_field input[name="question"]').each(function (index, item) {
-        var this_val = $(this).val().replace(" ", "_");
-        var answer_val = $(this).next().val().replace(" ", "_");
+        var this_val = $(this).val().replace(/ /gi, "_");
+        var answer_val = $(this).next().val().replace(/ /gi, "_");
          if(this_val == answer_val) {
             $("#id_"+this_val).text("O");
             correct += 1;
