@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load pybo_filter %}
+{% block content %}
+<div class="container my-3">
+    <!-- message 표시 -->
+    {% if messages %}
+    <div class="alert alert-danger my-3" role="alert">
+    {% for message in messages %}
+        <strong>{{ message.tags }}</strong>
+        <ul><li>{{ message.message }}</li></ul>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <!-- book -->
+    <h2 class="border-bottom py-2">
+        <a href="{% url 'word:book_detail' day.book.id%}">{{day.book.name}}</a>
+        > {{day.name}}
+    </h2>
+    <form method="post" action="{% url 'word:word_create' day.id%}">
+        {% csrf_token %}
+        <table style = "table-layout: auto; width: 100%; table-layout: fixed;" >
+            <colgroup>
+                <col width="5%" />
+                <col width="15%" />
+                <col width="25%" />
+                <col width="10%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>영어</th>
+                    <th>뜻</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if day.word_set.count == 0 %}
+                <tr>
+                    <td colspan="4">등록된 단어가 없습니다.</td>
+                </tr>
+                {% else %}
+                {% for word in day.word_set.all %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><a onclick="g_gout('{{word.english}}')" href="javascript:void(0);">{{word.english}}</a></td>
+                    <td>
+                        {{word.korean}}
+                    </td>
+                    <td>
+                        <a href="#" class="delete btn btn-sm btn-outline-secondary "
+                            data-uri="{% url 'word:word_delete' word.id  %}">삭제</a>
+                </tr>
+                {% endfor %}
+                {% endif %}
+                <tr>
+                    <td>추가</td>
+                    <td><input id="english" type="text" name="english"/></td>
+                    <td>
+                        <input style="width:100%;" class="korean" type="text" name="korean" style="ime-mode:active;"/>
+                    </td>
+                    <td>
+                        <button type="submit">등록</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <input id="code_reddit" type="hidden" value="hello" autocomplete="off">
+    <button class="btn" onclick="g_gout()"><i class="fas fa-volume-up"></i></button>
+    <!-- answer-->
+</div>
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+  var voices = [];
+  function setVoiceList() {
+  voices = window.speechSynthesis.getVoices();
+  }
+
+  setVoiceList();
+
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+  	window.speechSynthesis.onvoiceschanged = setVoiceList;
+  }
+
+  function speech(txt) {
+      if(!window.speechSynthesis) {
+        alert("음성 재생을 지원하지 않는 브라우저입니다. 크롬, 파이어폭스 등의 최신 브라우저를 이용하세요");
+        return;
+      }
+
+      var lang = 'en';
+      var utterThis = new SpeechSynthesisUtterance(txt);
+
+      utterThis.onend = function (event) {
+        console.log('end');
+      };
+
+      utterThis.onerror = function(event) {
+        console.log('error', event);
+      };
+
+      var voiceFound = false;
+
+      for(var i = 0; i < voices.length ; i++) {
+        if(voices[i].lang.indexOf(lang) >= 0 || voices[i].lang.indexOf(lang.replace('-', '_')) >= 0) {
+          utterThis.voice = voices[i];
+          voiceFound = true;
+        }
+      }
+      if(!voiceFound) {
+        alert('voice not found');
+        return;
+      }
+
+      utterThis.lang = lang;
+      utterThis.pitch = 1;
+      utterThis.rate = 1; //속도
+
+      window.speechSynthesis.speak(utterThis);
+  }
+
+  function g_gout(word){
+      speech(word);
+  }
+</script>
+{% endblock %}

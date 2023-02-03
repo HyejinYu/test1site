@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load pybo_filter %}
+{% block content %}
+<div class="container my-3">
+    <!-- message 표시 -->
+    {% if messages %}
+    <div class="alert alert-danger my-5" role="alert">
+    {% for message in messages %}
+        <strong>{{ message.tags }}</strong>
+        <ul><li>{{ message.message }}</li></ul>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <!-- 시험 -->
+    <div class="my-3">
+        <h2 class="border-bottom col m5">단어시험</h2>
+        <div class="row my-3">
+            <div class="col form-floating">
+                <select name="book" id="book" class="form-select"  aria-label="시험볼 책을 선택하세요.">
+                    <option value="">선택</option>
+                    {% for book in book_list %}
+                    <option value="{{book.id}}"{% if book.id == book_id%} selected{%endif%}>{{book.name}}</option>
+                    {% endfor %}
+                </select>
+                <label for="book" class="form-label">시험볼 책을 선택하세요.</label>
+            </div>
+        </div>
+        <div class="row book_days">
+            <div class="row my-3">
+                <h5 class="col-9">Day선택</h5>
+                <button type="button" onclick="addSelectDays()" class="btn btn-primary col-3">선택 Day 담기</button>
+            </div>
+            {% for day in day_list %}
+            <div class="form-check book_{{day.book.id}} mb-2{%if day.book.id != book_id%} display_none{% endif %}">
+                <input class="checked_days form-check-input" type="checkbox" data-book="{{day.book.name}}" data-day="{{day.name}}" value="{{day.id}}" id="day_{{day.id}}">
+                <label class="form-check-label" for="day_{{day.id}}">
+                {{day.name}}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row my-5 border p-5">
+            <div id="selected_day" class="col text-start">
+
+            </div>
+        </div>
+        <form id="test_form" action="{% url 'word:english_blank' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="days">
+            <div class="row my-5">
+                <div class="col text-center">
+                    문제 개수 : <input type="text" name="num_questions"> 개
+                </div>
+                <div class="col text-center">
+                    <button type="submit" class="col-10 btn btn-primary">시험 보기</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+$(document).ready(function() {
+    $("#book").change(function () {
+        if($("#book option:selected").val()){
+            $(".book_days .form-check").hide();
+            $(".book_days > .book_" + this.value).show();
+            $(".book_days").show();
+        } else {
+            $(".book_days").hide();
+        }
+    });
+    $('#test_form').submit(function() {
+        days=""
+        $("#selected_day>span").each(function(idx, item){
+            days = days +  $(item).data('dayid') +",";
+        });
+        days = days.substring(0, days.length - 1);
+        $("input[name=days]").val(days);
+    }); // end submit()
+});
+
+
+function addSelectDays(){
+    $("#selected_day>span").remove();
+    $(".checked_days:checked").each(function (index, item){
+        $("#selected_day")
+            .append('<span class="border m-1 p-1" data-dayid="'+$(item).val()+'">'+$(item).data('book') + ">"+ $(item).data('day')+'</span>')
+    });
+}
+
+</script>
+{% endblock %}
