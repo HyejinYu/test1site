@@ -78,6 +78,15 @@ $(document).ready(function() {
         });
         days = days.substring(0, days.length - 1);
         $("input[name=days]").val(days);
+        if(!days){
+           alert("Day담기를 눌러주세요");
+           return false;
+        }
+        if(!$("input[name=num_questions]").val()){
+            alert("문제 개수를 입력해주세요");
+            return false;
+        }
+
     }); // end submit()
 });
 
@@ -88,6 +97,7 @@ function addSelectDays(){
         $("#selected_day")
             .append('<span class="border m-1 p-1" data-dayid="'+$(item).val()+'">'+$(item).data('book') + ">"+ $(item).data('day')+'</span>')
     });
+    return 0;
 }
 
 </script>

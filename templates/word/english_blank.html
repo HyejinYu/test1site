@@ -12,6 +12,11 @@
     </div>
     {% endif %}
     <!-- 시험 -->
+    <h2> 시험 보기 </h2>
+    {% for day in day_list %}
+    <h5 class="border-bottom col">{{day.book.name}} > {{day.name}}</h5>
+    {% endfor%}
+
     <!--<form method="post">-->
         {% csrf_token %}
         <table>

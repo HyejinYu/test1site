@@ -21,14 +21,16 @@ def english_blank(request):
     str_days = request.POST.get('days')
     num_questions = int(request.POST.get('num_questions'))
     days = str_days.split(',')
-    print("num_questions : ", num_questions)
+    day_list = Day.objects.order_by('name').filter(
+        Q(id__in=days)
+    ).distinct()
     word_qset_list = Word.objects.order_by('-day')
     word_qset_list = word_qset_list.filter(
         Q(day__pk__in=days)
     ).distinct()
     word_list = list(word_qset_list)
     random.shuffle(word_list)
-    context = {'word_list': word_list[:num_questions]}
+    context = {'word_list': word_list[:num_questions], 'day_list': day_list}
     return render(request, 'word/english_blank.html', context)
 
 
