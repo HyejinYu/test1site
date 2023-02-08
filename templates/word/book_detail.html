@@ -12,32 +12,50 @@
     </div>
     {% endif %}
     <!-- book -->
-    <h2 id="book_name" class="border-bottom col">{{book.name}}</h2>
-    <a href="{% url 'word:day_create' book.id%}" class="btn btn-primary">Day 등록하기</a>
-    <a href="{% url 'word:test_index' book.id %}" class="btn btn-primary">시험보기</a>
-    {%if book.day_set %}
-    {% for day in book.day_set.all %}
-    <a id="word_{{word.id}}"></a>
-    <div class="card my-3">
-        <div class="card-body">
-            <div class="card-text form-group row">
-                <a class="col" href="{% url 'word:day_detail' day.id%}">{{ day.name }}</a>
-                <a href="#" class="alert btn btn-sm btn-outline-secondary col-2"
-                   data-type="modify" data-uri="{% url 'word:day_modify' day.id  %}">수정</a>
-                <a href="#" class="alert btn btn-sm btn-outline-secondary col-2"
-                   data-type="delete" data-uri="{% url 'word:day_delete' day.id  %}">삭제</a>
-            </div>
-        </div>
+    <div class="">
+        <nav aria-label="breadcrumb fs-5">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item active fs-4" aria-current="page">{{book.name}}</li>
+            </ol>
+        </nav>
     </div>
-    {% endfor %}
-    {% else %}
-    <h6 class="border-bottom my-3 py-2">Day가 등록되지 않았습니다.</h6>
-    {% endif %}
+    <div class="container text-end">
+        <a href="{% url 'word:day_create' book.id%}" class="btn btn-primary">Day 등록하기</a>
+        <a href="{% url 'word:test_index' book.id %}" class="btn btn-primary">시험보기</a>
+    </div>
+    <div class="container mb-3">
+        <table id="sortTable" class="form-label table text-center">
+            <tr>
+                <th width="70%">Day</th>
+                <th width="15%">수정</th>
+                <th width="15%">삭제</th>
+            </tr>
+        {%if book.day_set %}
+        {% for day in book.day_set.all %}
+            <tr>
+                <td><a href="{% url 'word:day_detail' day.id%}">{{ day.name }}</a></td>
+                <td>
+                    <a href="#" class="alert_btn btn btn-sm btn-outline-secondary"
+                       data-type="modify" data-uri="{% url 'word:day_modify' day.id  %}">수정</a>
+                </td>
+                <td>
+                    <a href="#" class="alert_btn btn btn-sm btn-outline-secondary"
+                       data-type="delete" data-uri="{% url 'word:day_delete' day.id  %}">삭제</a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% else %}
+            <td colspan="3">Day가 등록되지 않았습니다.</td>
+        {% endif %}
+        </table>
+    </div>
 </div>
 {% endblock %}
 {% block script %}
 <script type='text/javascript'>
-const alert_elements = document.getElementsByClassName("alert");
+//TODO datatable 적용하기
+
+const alert_elements = document.getElementsByClassName("alert_btn");
 Array.from(alert_elements).forEach(function(element) {
     element.addEventListener('click', function() {
         comment =""
@@ -52,4 +70,5 @@ Array.from(alert_elements).forEach(function(element) {
     });
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
 {% endblock %}

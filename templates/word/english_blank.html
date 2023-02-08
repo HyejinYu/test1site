@@ -13,23 +13,29 @@
     {% endif %}
     <!-- 시험 -->
     <h2> 시험 보기 </h2>
-    {% for day in day_list %}
-    <h5 class="border-bottom col">{{day.book.name}} > {{day.name}}</h5>
-    {% endfor%}
+    <div class="alert alert-secondary">
+        {% for day in day_list %}
+        <span class="badge rounded-pill bg-secondary fs-6 text me-2">{{day.book.name}} > {{day.name}}</span>
+        {% endfor%}
+    </div>
+
 
     <!--<form method="post">-->
         {% csrf_token %}
         <table>
             <tr>
-                <th>한글</th>
                 <th>영어</th>
+                <th class="ms-2">한글</th>
                 <th>정답여부</th>
                 <th class="after_test" style="display:none;">소리듣기</th>
             </tr>
         {% for word in word_list %}
             <tr class="test_field">
+                <td>
+                    <input type="hidden" name="question" value="{{word.english}}" />
+                    <input type="text" name="answer" class="form-control" placeholder="영어로 적으세요." />
+                </td>
                 <td>{{word.korean}}</td>
-                <td><input type="hidden" name="question" value="{{word.english}}" /><input type="text" name="answer" /> </td>
                 <td id="id_{{word.english|replace_space:'_'}}"></td>
                 <td class="after_test" style="display:none;"><a onclick="g_gout('{{word.english}}')" href="javascript:void(0);">{{word.english}}</a></td>
             </tr>

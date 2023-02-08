@@ -9,3 +9,9 @@ input[type=submit] {
 .display_none {
     display:none;
 }
+
+a {
+    text-decoration:none;
+}
+$breadcrumb-font-size:              1.5rem
+$breadcrumb-divider:                quote(">");;

@@ -12,18 +12,20 @@
     </div>
     {% endif %}
     <!-- book -->
-    <h2 class="border-bottom py-2">
-        <a href="{% url 'word:book_detail' day.book.id%}">{{day.book.name}}</a>
-        > {{day.name}}
-    </h2>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item fs-4"><a href="{% url 'word:book_detail' day.book.id%}">{{day.book.name}}</a></li>
+            <li class="breadcrumb-item active fs-4" aria-current="page">{{day.name}}</li>
+        </ol>
+    </nav>
     <form method="post" action="{% url 'word:word_create' day.id%}">
         {% csrf_token %}
-        <table style = "table-layout: auto; width: 100%; table-layout: fixed;" >
+        <table class="table table-striped">
             <colgroup>
                 <col width="5%" />
                 <col width="15%" />
-                <col width="25%" />
-                <col width="10%" />
+                <col />
+                <col width="5%" />
             </colgroup>
             <thead>
                 <tr>
@@ -52,14 +54,14 @@
                 </tr>
                 {% endfor %}
                 {% endif %}
-                <tr>
+                <tr class="border">
                     <td>추가</td>
-                    <td><input id="english" type="text" name="english"/></td>
+                    <td><input id="english" type="text" name="english" class="form-control"/></td>
                     <td>
-                        <input style="width:100%;" class="korean" type="text" name="korean" style="ime-mode:active;"/>
+                        <input style="width:100%;" class="korean form-control" type="text" name="korean" style="ime-mode:active;"/>
                     </td>
                     <td>
-                        <button type="submit">등록</button>
+                        <button type="submit" class="btn btn-primary btn-sm">등록</button>
                     </td>
                 </tr>
             </tbody>

@@ -62,5 +62,5 @@ def day_delete(request, day_id):
 
 def day_detail(request, day_id):
     day = get_object_or_404(Day, pk=day_id)
-    context = {'day': day}
+    context = {'day': day, 'title_tag': (day.book.name + " > " + day.name)}
     return render(request, 'word/day_detail.html', context)

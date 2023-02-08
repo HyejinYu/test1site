@@ -28,18 +28,18 @@
         <div class="row book_days">
             <div class="row my-3">
                 <h5 class="col-9">Day선택</h5>
-                <button type="button" onclick="addSelectDays()" class="btn btn-primary col-3">선택 Day 담기</button>
             </div>
             {% for day in day_list %}
-            <div class="form-check book_{{day.book.id}} mb-2{%if day.book.id != book_id%} display_none{% endif %}">
+            <div class="form-check book_{{day.book.id}} ms-3 mb-2{%if day.book.id != book_id%} display_none{% endif %}">
                 <input class="checked_days form-check-input" type="checkbox" data-book="{{day.book.name}}" data-day="{{day.name}}" value="{{day.id}}" id="day_{{day.id}}">
                 <label class="form-check-label" for="day_{{day.id}}">
                 {{day.name}}
                 </label>
             </div>
             {% endfor %}
+            <button type="button" onclick="addSelectDays()" class="btn btn-primary col-3 mt-3">선택 Day 담기</button>
         </div>
-        <div class="row my-5 border p-5">
+        <div class="row my-5 border p-5 alert alert-info">
             <div id="selected_day" class="col text-start">
 
             </div>
@@ -49,7 +49,12 @@
             <input type="hidden" name="days">
             <div class="row my-5">
                 <div class="col text-center">
-                    문제 개수 : <input type="text" name="num_questions"> 개
+                    <div class="mb-3 row">
+                        <label for="num_questions" class="col-sm-2 col-form-label">문제 개수</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="num_questions" name="num_questions">
+                        </div>
+                    </div>
                 </div>
                 <div class="col text-center">
                     <button type="submit" class="col-10 btn btn-primary">시험 보기</button>
@@ -95,7 +100,7 @@ function addSelectDays(){
     $("#selected_day>span").remove();
     $(".checked_days:checked").each(function (index, item){
         $("#selected_day")
-            .append('<span class="border m-1 p-1" data-dayid="'+$(item).val()+'">'+$(item).data('book') + ">"+ $(item).data('day')+'</span>')
+            .append('<span class="badge rounded-pill bg-primary fs-6 text me-2" data-dayid="'+$(item).val()+'">'+$(item).data('book') + ">"+ $(item).data('day')+'</span>')
     });
     return 0;
 }

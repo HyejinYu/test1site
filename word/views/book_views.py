@@ -55,7 +55,7 @@ def book_delete(request, book_id):
 @login_required(login_url='common:login')
 def book_detail(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
-    context = {'book': book}
+    context = {'book': book, 'title_tag': (book.name + " Day보기")}
     return render(request, 'word/book_detail.html', context)
 
 
