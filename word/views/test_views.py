@@ -12,7 +12,7 @@ from word.models import Book, Day, Word
 def test_index(request, book_id):
     book_list = Book.objects.order_by('name')
     day_list = Day.objects.order_by('name')
-    context = {"book_id": book_id, "book_list": book_list, "day_list": day_list}
+    context = {"book_id": book_id, "book_list": book_list, "day_list": day_list, "title_tag": '영어단어 시험 선택'}
     return render(request, 'word/test_index.html', context)
 
 
@@ -30,7 +30,7 @@ def english_blank(request):
     ).distinct()
     word_list = list(word_qset_list)
     random.shuffle(word_list)
-    context = {'word_list': word_list[:num_questions], 'day_list': day_list}
+    context = {'word_list': word_list[:num_questions], 'day_list': day_list, 'title_tag': "영어 단어 시험보기"}
     return render(request, 'word/english_blank.html', context)
 
 

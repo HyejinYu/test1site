@@ -16,6 +16,6 @@ def index(request):
         ).distinct()
     paginator = Paginator(book_list, 10)
     page_obj = paginator.get_page(page)
-    context = {'book_list': page_obj, 'page': page, 'kw': kw}
+    context = {'book_list': page_obj, 'page': page, 'kw': kw, 'title_tag': '영어단어 책 리스트'}
     return render(request, 'word/book_list.html', context)
 

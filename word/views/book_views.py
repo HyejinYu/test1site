@@ -21,7 +21,7 @@ def book_create(request):
     else:
         print("book_create :  GET")
         form = BookForm()
-    context = {'form': form}
+    context = {'form': form, 'title_tag': "책 등록"}
     return render(request, 'word/book_form.html', {'form': form})
 
 
@@ -38,7 +38,7 @@ def book_modify(request, book_id):
             return redirect('word:detail', question_id=book.id)
     else:
         form = BookForm(instance=book)
-    context = {'form': form}
+    context = {'form': form,'title_tag': (book.name + ' 수정하기')}
     return render(request, 'word/book_form.html', context)
 
 

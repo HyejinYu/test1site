@@ -25,7 +25,7 @@ def day_create(request, book_id):
     else:
         print("day_create :  GET")
         form = DayForm()
-    return render(request, 'word/day_form.html', {'form': form})
+    return render(request, 'word/day_form.html', {'form': form, 'title_tag': (book.name + 'Day 등록')})
 
 
 def day_modify(request, day_id):
@@ -40,7 +40,7 @@ def day_modify(request, day_id):
             return redirect('word:book_detail', book_id=day.book.id)
     else:
         form = DayForm(instance=day)
-    context = {'form': form}
+    context = {'form': form, 'title_tag': (day.book.name + ' > ' + day.name + ' 수정')}
     return render(request, 'word/day_form.html', context)
 
 
