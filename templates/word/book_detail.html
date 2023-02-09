@@ -24,36 +24,45 @@
         <a href="{% url 'word:test_index' book.id %}" class="btn btn-primary">시험보기</a>
     </div>
     <div class="container mb-3">
-        <table id="sortTable" class="form-label table text-center">
-            <tr>
-                <th width="70%">Day</th>
-                <th width="15%">수정</th>
-                <th width="15%">삭제</th>
-            </tr>
-        {%if book.day_set %}
-        {% for day in book.day_set.all %}
-            <tr>
-                <td><a href="{% url 'word:day_detail' day.id%}">{{ day.name }}</a></td>
-                <td>
-                    <a href="#" class="alert_btn btn btn-sm btn-outline-secondary"
-                       data-type="modify" data-uri="{% url 'word:day_modify' day.id  %}">수정</a>
-                </td>
-                <td>
-                    <a href="#" class="alert_btn btn btn-sm btn-outline-secondary"
-                       data-type="delete" data-uri="{% url 'word:day_delete' day.id  %}">삭제</a>
-                </td>
-            </tr>
-        {% endfor %}
-        {% else %}
-            <td colspan="3">Day가 등록되지 않았습니다.</td>
-        {% endif %}
+        <table id="sortTable" class="form-label table table-striped table-bordered text-center order-column">
+            <thead>
+                <tr>
+                    <th width="70%">Day</th>
+                    <th width="15%">수정</th>
+                    <th width="15%">삭제</th>
+                </tr>
+            </thead>
+            <tbody>
+            {%if book.day_set %}
+            {% for day in book.day_set.all %}
+                <tr>
+                    <td><a href="{% url 'word:day_detail' day.id%}">{{ day.name }}</a></td>
+                    <td>
+                        <a href="#" class="alert_btn btn btn-sm btn-outline-secondary"
+                           data-type="modify" data-uri="{% url 'word:day_modify' day.id  %}">수정</a>
+                    </td>
+                    <td>
+                        <a href="#" class="alert_btn btn btn-sm btn-outline-secondary"
+                           data-type="delete" data-uri="{% url 'word:day_delete' day.id  %}">삭제</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% else %}
+                <td colspan="3">Day가 등록되지 않았습니다.</td>
+            {% endif %}
+            </tbody>
         </table>
     </div>
 </div>
 {% endblock %}
 {% block script %}
 <script type='text/javascript'>
-//TODO datatable 적용하기
+    $(document).ready(function() {
+        $('#sortTable').DataTable({
+            'paging': false,
+            'lengthChange': false
+        });
+    } );
 
 const alert_elements = document.getElementsByClassName("alert_btn");
 Array.from(alert_elements).forEach(function(element) {
