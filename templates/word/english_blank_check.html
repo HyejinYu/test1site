@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load pybo_filter %}
+{% block content %}
+<div class="container my-3">
+    <!-- message 표시 -->
+    {% if messages %}
+    <div class="alert alert-danger my-5" role="alert">
+    {% for message in messages %}
+        <strong>{{ message.tags }}</strong>
+        <ul><li>{{ message.message }}</li></ul>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <!-- 시험 -->
+    <h2> 시험 결과 확인 점수 : {{test.score}}</h2>
+    <table>
+        <tr>
+            <th>내 답</th>
+            <th class="ms-2">한글</th>
+            <th>영어 정답</th>
+        </tr>
+    {% for row in test.testrow %}
+        <tr class="test_field">
+            <td>{{row.answer}}</td>
+            <td>{{row.word.korean}}</td>
+            <td>{{row.word.english}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+</script>
+{% endblock %}

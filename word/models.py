@@ -33,3 +33,22 @@ class Word(models.Model):
 
     def __str__(self):
         return self.english
+
+
+class Test(models.Model):
+    create_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    create_date = models.DateTimeField()
+    score = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.create_user.name, " : ", self.create_date
+
+
+class TestRow(models.Model):
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    word = models.ManyToManyField(Word)
+    answer = models.CharField(null=True, blank=True, max_length=100)
+    is_correct = models.BooleanField(null=True, blank=True)
+
+    def __str__(self):
+        return self.word.english + " : " + self.answer

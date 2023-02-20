@@ -57,7 +57,8 @@
                     </div>
                 </div>
                 <div class="col text-center">
-                    <button type="submit" class="col-10 btn btn-primary">시험 보기</button>
+                    <button type="button" onclick="go_submit(false);" class="col-10 btn btn-warning">시험 연습</button>
+                    <button type="button" onclick="go_submit(true);" class="col-10 btn btn-primary">시험 보기</button>
                 </div>
             </div>
         </form>
@@ -76,25 +77,27 @@ $(document).ready(function() {
             $(".book_days").hide();
         }
     });
-    $('#test_form').submit(function() {
-        days=""
-        $("#selected_day>span").each(function(idx, item){
-            days = days +  $(item).data('dayid') +",";
-        });
-        days = days.substring(0, days.length - 1);
-        $("input[name=days]").val(days);
-        if(!days){
-           alert("Day담기를 눌러주세요");
-           return false;
-        }
-        if(!$("input[name=num_questions]").val()){
-            alert("문제 개수를 입력해주세요");
-            return false;
-        }
-
-    }); // end submit()
 });
 
+function go_submit(is_test){
+    days=""
+    $("#selected_day>span").each(function(idx, item){
+        days = days +  $(item).data('dayid') +",";
+    });
+    days = days.substring(0, days.length - 1);
+    $("input[name=days]").val(days);
+    if(!days){
+       alert("Day담기를 눌러주세요");
+       return false;
+    }
+    if(!$("input[name=num_questions]").val()){
+        alert("문제 개수를 입력해주세요");
+        return false;
+    }
+
+    $('#test_form').attr("action", is_test ? '{% url 'word:english_blank' %}' : '{% url 'word:english_blank_practice' %}');
+    $('#test_form').submit();
+}
 
 function addSelectDays(){
     $("#selected_day>span").remove();

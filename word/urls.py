@@ -18,6 +18,8 @@ urlpatterns = [
     path('word/delete/<int:word_id>', word_views.word_delete, name='word_delete'),
     path('test/index/<int:book_id>', test_views.test_index, name='test_index'),
     path('test/english_blank/', test_views.english_blank, name='english_blank'),
+    path('test/english_blank_check/<int:test_id>', test_views.english_blank_check, name='english_blank_check'),
+    path('test/english_blank_practice/', test_views.english_blank_practice, name='english_blank_practice'),
 ]
 
 
