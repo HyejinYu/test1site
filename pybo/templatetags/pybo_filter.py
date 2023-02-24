@@ -19,3 +19,10 @@ def mark(value):
 @register.filter
 def replace_space(value, arg):
     return value.replace(" ", arg)
+
+
+@register.filter
+def return_ox(value):
+    if value:
+        return "O"
+    return "X"

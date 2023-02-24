@@ -44,7 +44,7 @@
                 {% for word in day.word_set.all %}
                 <tr>
                     <td>{{forloop.counter}}</td>
-                    <td><a onclick="g_gout('{{word.english}}')" href="javascript:void(0);">{{word.english}}</a></td>
+                    <td><a id="id_{{word.id}}" onclick="g_gout({{word.id}})" href="javascript:void(0);">{{word.english}}</a></td>
                     <td>
                         {{word.korean}}
                     </td>
@@ -130,8 +130,9 @@
       window.speechSynthesis.speak(utterThis);
   }
 
-  function g_gout(word){
-      speech(word);
+  function g_gout(id){
+    const elem = document.getElementById("id_"+id);
+    speech(elem.innerHTML);
   }
 </script>
 {% endblock %}

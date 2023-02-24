@@ -13,17 +13,20 @@
     {% endif %}
     <!-- 시험 -->
     <h2> 시험 결과 확인 점수 : {{test.score}}</h2>
-    <table>
+    <h4> 시험 시간 : {{test.end_date|sub:test.create_date}}</h4>
+    <table class="form-label table mt-5 table-striped table-bordered text-center order-column">
         <tr>
+            <th>정답 여부</th>
+            <th>영어 정답</th>
             <th>내 답</th>
             <th class="ms-2">한글</th>
-            <th>영어 정답</th>
         </tr>
-    {% for row in test.testrow %}
+    {% for row in test.row_set.all %}
         <tr class="test_field">
+            <td>{{row.is_correct|return_ox}}</td>
+            <td>{{row.word.english}}</td>
             <td>{{row.answer}}</td>
             <td>{{row.word.korean}}</td>
-            <td>{{row.word.english}}</td>
         </tr>
     {% endfor %}
     </table>

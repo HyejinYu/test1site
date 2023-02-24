@@ -20,22 +20,22 @@
     </div>
 
 
-    <form id="form" method="post" action="{% url 'word:english_blank_check'%}">
+    <form id="form" method="post" action="{% url 'word:english_blank_check' test.id%}">
         {% csrf_token %}
-        <input id="words" type="hidden" name="words" />
+        <input id="questions" type="hidden" name="questions" />
         <input id="answers" type="hidden" name="answers" />
         <table>
             <tr>
                 <th>영어</th>
                 <th class="ms-2">한글</th>
             </tr>
-        {% for word in word_list %}
+        {% for row in test.row_set.all %}
             <tr class="test_field">
                 <td>
-                    <input type="hidden" name="question" value="{{word.id}}" />
+                    <input type="hidden" name="question" value="{{row.id}}" />
                     <input type="text" name="answer" class="form-control" placeholder="영어로 적으세요." />
                 </td>
-                <td>{{word.korean}}</td>
+                <td>{{row.word.korean}}</td>
             </tr>
         {% endfor %}
         </table>
@@ -50,11 +50,11 @@ function answer_check(){
     words = ""
     answers = ""
     $('.test_field input[name="question"]').each(function (index, item) {
-        words += $(this).val() +",";
+        questions += $(this).val() +",";
         answers += $(this).next().val() +",";
     });
-    $("#words").val(words);
-    $("#answers").val(answers);
+    $("#questions").val(questions.slice(0, -1));
+    $("#answers").val(answers.slice(0, -1));
     $("#form").submit();
 }
 </script>

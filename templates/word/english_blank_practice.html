@@ -32,16 +32,18 @@
         {% for word in word_list %}
             <tr class="test_field">
                 <td>
-                    <input type="hidden" name="question" value="{{word.english}}" />
+                    <input type="hidden" data-wid="{{word.id}}" name="question" value="{{word.english}}" />
                     <input type="text" name="answer" class="form-control" placeholder="영어로 적으세요." />
                 </td>
                 <td>{{word.korean}}</td>
-                <td id="id_{{word.english|replace_space:'_'}}"></td>
-                <td class="after_test" style="display:none;"><a onclick="g_gout('{{word.english}}')" href="javascript:void(0);">{{word.english}}</a></td>
+                <td id="is_correct_{{word.id}}"></td>
+                <td class="after_test" style="display:none;"><a id="id_{{word.id}}" onclick="g_gout({{word.id}})" href="javascript:void(0);">{{word.english}}</a></td>
             </tr>
         {% endfor %}
         </table>
-        <button type="button" onclick="answer_check()">정답 제출</button>
+        <div class="row">
+            <button type="button" class="btn btn-primary btn-primary mt-5" onclick="answer_check()">정답 제출</button>
+        </div>
     <h1 id="point"></h1>
     <!--</form>-->
 {% endblock %}
@@ -97,8 +99,9 @@ function speech(txt) {
 }
 
 
-function g_gout(word){
-  speech(word);
+function g_gout(id){
+    const elem = document.getElementById("id_"+id);
+    speech(elem.innerHTML);
 }
 
 var count = 1;
@@ -111,13 +114,14 @@ function answer_check(){
     var total = 0;
     var correct = 0;
     $('.test_field input[name="question"]').each(function (index, item) {
-        var this_val = $(this).val().replace(/ /gi, "_");
-        var answer_val = $(this).next().val().replace(/ /gi, "_");
+        var this_val = $(this).val();
+        var this_id = $(this).data('wid');
+        var answer_val = $(this).next().val();
          if(this_val == answer_val) {
-            $("#id_"+this_val).text("O");
+            $("#is_correct_"+this_id).text("O");
             correct += 1;
          } else {
-            $("#id_"+this_val).text("X:"+this_val);
+            $("#is_correct_"+this_id).text("X:"+answer_val);
         }
         total += 1;
     });
