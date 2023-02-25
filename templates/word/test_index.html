@@ -25,20 +25,20 @@
                 <label for="book" class="form-label">시험볼 책을 선택하세요.</label>
             </div>
         </div>
-        <div class="row book_days">
+        <div class="book_days">
             <div class="row my-3">
                 <h5 class="col-9">Day선택</h5>
             </div>
             {% for day in day_list %}
-            <div class="form-check book_{{day.book.id}} ms-3 mb-2{%if day.book.id != book_id%} display_none{% endif %}">
+            <div class="form-check form-check-inline book_{{day.book.id}} ms-3 mb-2{%if day.book.id != book_id%} display_none{% endif %}">
                 <input class="checked_days form-check-input" type="checkbox" data-book="{{day.book.name}}" data-day="{{day.name}}" value="{{day.id}}" id="day_{{day.id}}">
                 <label class="form-check-label" for="day_{{day.id}}">
                 {{day.name}}
                 </label>
             </div>
             {% endfor %}
-            <button type="button" onclick="addSelectDays()" class="btn btn-primary col-3 mt-3">선택 Day 담기</button>
         </div>
+        <button type="button" onclick="addSelectDays()" class="btn btn-primary col-3 mt-3">선택 Day 담기</button>
         <div class="row my-5 border p-5 alert alert-info">
             <div id="selected_day" class="col text-start">
 
