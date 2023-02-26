@@ -19,6 +19,11 @@
                 <li>
                    <a class="nav-link" href="{% url 'word:my_test_result' %}">나의 시험 결과</a>
                 </li>
+                    {% if user.is_superuser %}
+                    <li>
+                       <a class="nav-link" href="{% url 'word:admin_test_result' %}">전체 시험 결과</a>
+                    </li>
+                    {% endif %}
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'common:signup' %}">회원가입</a>

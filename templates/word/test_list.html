@@ -15,7 +15,7 @@
     <div class="">
         <nav aria-label="breadcrumb fs-5">
             <ol class="breadcrumb">
-            <li class="breadcrumb-item active fs-4" aria-current="page">나의 시험결과 리스트</li>
+            <li class="breadcrumb-item active fs-4" aria-current="page">{{all_or_my}}시험결과 리스트</li>
             </ol>
         </nav>
     </div>
@@ -31,10 +31,10 @@
                 </tr>
             </thead>
             <tbody style="text">
-            {%if mytest.count %}
-            {% for test in mytest %}
+            {%if tests.count %}
+            {% for test in tests %}
                 <tr>
-                    <td>{{mytest.count|sub:forloop.counter0}}</td>
+                    <td>{{tests.count|sub:forloop.counter0}}</td>
                     <td>{{test.score}}</td>
                     <td>
                         <a href="{% url 'word:english_blank_check' test.id%}">

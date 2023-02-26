@@ -19,7 +19,7 @@ def test_index(request, book_id):
     return render(request, 'word/test_index.html', context)
 
 
-#시험 화면
+# 시험 화면
 @login_required(login_url='common:login')
 def english_blank(request):
     str_days = request.POST.get('days')
@@ -68,20 +68,20 @@ def english_blank_practice(request):
     return render(request, 'word/english_blank_practice.html', context)
 
 
-#시험 결과처리 및 시험 결과 보기
+# 시험 결과처리 및 시험 결과 보기
 def english_blank_check(request, test_id):
     test = get_object_or_404(Test, pk=test_id)
-    test.end_date = timezone.now()
     if request.method == 'POST':
+        test.end_date = timezone.now()
         question_answer_dict = dict(zip(request.POST.getlist('question'), request.POST.getlist('answer')))
         correct_answer_count = 0
         for row in test.row_set.all():
             row.answer = question_answer_dict[str(row.id)]
             if row.word.english == row.answer:
-                correct_answer_count +=1
+                correct_answer_count += 1
                 row.is_correct = True
             row.save()
-        test.score = round(correct_answer_count/test.row_set.all().count()*100)
+        test.score = round(correct_answer_count / test.row_set.all().count() * 100)
         test.save()
         return redirect('word:english_blank_check', test_id=test.id)
 
@@ -89,8 +89,18 @@ def english_blank_check(request, test_id):
     return render(request, 'word/english_blank_check.html', context)
 
 
-#나의 시험 결과
+# 나의 시험 결과
 def my_test_result(request):
-    mytest = Test.objects.filter(create_user=request.user).order_by('-id')
-    context = {'mytest': mytest, 'title_tag': "시험 결과 리스트"}
-    return render(request, 'word/my_test_list.html', context)
+    tests = Test.objects.filter(create_user=request.user).order_by('-id')
+    context = {'tests': tests, 'title_tag': "시험 결과 리스트", 'all_or_my': '나의 '}
+    return render(request, 'word/test_list.html', context)
+
+
+# 전체 시험 결과
+def admin_test_result(request):
+    if request.user.is_superuser:
+        tests = Test.objects.order_by('-id')
+        context = {'tests': tests, 'title_tag': "[관리자] 전체 시험 결과 리스트", 'all_or_my': '전체 '}
+        return render(request, 'word/test_list.html', context)
+    else:
+        return render(request, 'common/no_auth.html')

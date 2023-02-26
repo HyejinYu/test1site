@@ -21,6 +21,7 @@ urlpatterns = [
     path('test/english_blank_check/<int:test_id>', test_views.english_blank_check, name='english_blank_check'),
     path('test/english_blank_practice/', test_views.english_blank_practice, name='english_blank_practice'),
     path('test/my_test_result/', test_views.my_test_result, name='my_test_result'),
+    path('test/admin/test_list', test_views.admin_test_result, name='admin_test_result'),
 ]
 
 
