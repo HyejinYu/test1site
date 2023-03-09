@@ -1,2 +1,3 @@
 db.sqlite3
 *_initial.py
+*__pycache__*
