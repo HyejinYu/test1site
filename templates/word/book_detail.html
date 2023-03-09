@@ -57,12 +57,12 @@
 {% endblock %}
 {% block script %}
 <script type='text/javascript'>
-    $(document).ready(function() {
-        $('#sortTable').DataTable({
-            'paging': false,
-            'lengthChange': false
-        });
-    } );
+$(document).ready(function() {
+    $('#sortTable').DataTable({
+        'paging': false,
+        'lengthChange': false
+    });
+} );
 
 const alert_elements = document.getElementsByClassName("alert_btn");
 Array.from(alert_elements).forEach(function(element) {
